@@ -1,0 +1,30 @@
+.suggestion-item {
+  list-style-type: none;
+  padding: 3px 5px;
+  cursor: pointer;
+  width: 100%;
+  height: 30px;
+
+  &:hover {
+    background-color: lightgrey;
+  }
+}
+
+.suggestion-box {
+  padding-left: 0px;
+  position: absolute;
+  width: 100%;
+}
+
+.autocomplete-container {
+  /* text-align: center; */
+  position: relative;
+  margin: auto;
+  width: 240px;
+
+  input {
+    width: 100%;
+    height: 40px;
+    border-radius: 4px;
+  }
+}

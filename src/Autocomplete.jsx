@@ -100,7 +100,7 @@ function Autocomplete() {
   }, [query]);
 
   return (
-    <>
+    <div className="autocomplete-container">
       <input
         type="text"
         value={query}
@@ -108,13 +108,15 @@ function Autocomplete() {
         onChange={handlQueryChange}
       />
       {suggestions.length > 0 && (
-        <ul>
+        <ul className="suggestion-box">
           {suggestions.map((item) => (
-            <li key={item}>{item}</li>
+            <li key={item} className="suggestion-item">
+              {item}
+            </li>
           ))}
         </ul>
       )}
-    </>
+    </div>
   );
 }
 

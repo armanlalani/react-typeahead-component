@@ -1,7 +1,12 @@
 import Autocomplete from "./Autocomplete";
 
 function App() {
-  return <Autocomplete />;
+  return (
+    <>
+      <Autocomplete />
+      {/* <Autocomplete /> */}
+    </>
+  );
 }
 
 export default App;
