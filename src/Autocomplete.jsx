@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import "./autocomplete.css";
 
 const fruits = [
@@ -66,6 +66,7 @@ const fruits = [
 ];
 
 const getFruits = (query) => {
+  console.log("Called", query);
   return new Promise((res, rej) => {
     const filteredFruits = fruits.filter((fruit) =>
       fruit.toLowerCase().includes(query.toLowerCase())
@@ -77,27 +78,49 @@ const getFruits = (query) => {
   });
 };
 
+function debounce(fn, wait = 3000) {
+  let token;
+  return function (...args) {
+    clearTimeout(token);
+    token = setTimeout(() => fn.apply(this, args), wait);
+  };
+}
+
+function useDebounce(value, wait = 300) {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() => {
+    let token = setTimeout(() => {
+      setDebouncedValue(value);
+    }, wait);
+
+    return () => clearTimeout(token);
+  }, [value, wait]);
+
+  return debouncedValue;
+}
+
 function Autocomplete() {
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
+  const debouncedQuery = useDebounce(query, 300);
 
   const handlQueryChange = (e) => {
     setQuery(e.target.value);
   };
 
-  const getData = async () => {
-    const data = await getFruits(query);
-    console.log(data);
+  const getData = useCallback(async () => {
+    const data = await getFruits(debouncedQuery);
     setSuggestions(data);
-  };
+  }, [debouncedQuery]);
 
   useEffect(() => {
-    if (query.length > 3) {
+    if (debouncedQuery.trim().length > 3) {
       getData();
+    } else {
+      setSuggestions([]);
     }
-
-    setSuggestions([]);
-  }, [query]);
+  }, [debouncedQuery, getData]);
 
   return (
     <div className="autocomplete-container">
