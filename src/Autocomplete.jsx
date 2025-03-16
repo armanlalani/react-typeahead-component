@@ -1,5 +1,5 @@
+import { useState, useEffect } from "react";
 import "./autocomplete.css";
-import { useState } from "react";
 
 const fruits = [
   "Apple",
@@ -79,10 +79,25 @@ const getFruits = (query) => {
 
 function Autocomplete() {
   const [query, setQuery] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
 
   const handlQueryChange = (e) => {
     setQuery(e.target.value);
   };
+
+  const getData = async () => {
+    const data = await getFruits(query);
+    console.log(data);
+    setSuggestions(data);
+  };
+
+  useEffect(() => {
+    if (query.length > 3) {
+      getData();
+    }
+
+    setSuggestions([]);
+  }, [query]);
 
   return (
     <>
@@ -91,7 +106,14 @@ function Autocomplete() {
         value={query}
         placeholder="Search..."
         onChange={handlQueryChange}
-      ></input>
+      />
+      {suggestions.length > 0 && (
+        <ul>
+          {suggestions.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      )}
     </>
   );
 }
