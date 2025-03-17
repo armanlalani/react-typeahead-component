@@ -10,10 +10,14 @@
   }
 }
 
-.suggestion-box {
-  padding-left: 0px;
+.suggestion-container {
   position: absolute;
   width: 100%;
+  border: 1px solid gainsboro;
+}
+
+.suggestion-box {
+  padding-left: 0px;
 }
 
 .autocomplete-container {
